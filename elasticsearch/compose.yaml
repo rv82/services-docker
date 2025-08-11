@@ -1,0 +1,39 @@
+networks:
+  elastic:
+    external: false
+
+configs:
+  elasticsearch.yml:
+    content: |
+      cluster.name: "docker-cluster"
+      network.host: 0.0.0.0
+      xpack.security.enabled: false
+      path.repo: [ '/usr/share/elasticsearch/backup' ]
+
+services:
+  elasticsearch:
+    image: docker.io/library/elasticsearch:${VERSION}
+    ports:
+      - 9200:9200
+    volumes:
+      - ${ES_DATA}:/usr/share/elasticsearch/data
+      - ${ES_BACKUP}:/usr/share/elasticsearch/backup
+    configs:
+      - source: elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      discovery.type: single-node
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    networks:
+      - elastic
+
+  kibana:
+    image: docker.io/library/kibana:${VERSION}
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
