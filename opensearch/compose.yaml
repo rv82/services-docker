@@ -1,0 +1,41 @@
+networks:
+  opensearch-net:
+    external: false
+
+configs:
+  opensearch.yml:
+    content: |
+      cluster.name: "opensearch-cluster"
+      network.host: 0.0.0.0
+      plugins.security.disabled: true
+      path.repo: [ '/usr/share/opensearch/backup' ]
+
+services:
+  opensearch:
+    image: docker.io/opensearchproject/opensearch:${VERSION}
+    ports:
+      - 9200:9200
+    volumes:
+      - ${DATA_DIR}:/usr/share/opensearch/data
+      - ${BACKUP_DIR}:/usr/share/opensearch/backup
+    configs:
+      - source: opensearch.yml
+        target: /usr/share/opensearch/config/opensearch.yml
+    networks:
+      - opensearch-net
+    environment:
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+      discovery.type: single-node
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD}
+
+  opensearch-dashboards:
+    image: docker.io/opensearchproject/opensearch-dashboards:${VERSION}
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    networks:
+      - opensearch-net
+    environment:
+      OPENSEARCH_HOSTS: http://opensearch:9200
+      DISABLE_SECURITY_DASHBOARDS_PLUGIN: true
