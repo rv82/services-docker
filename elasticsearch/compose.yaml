@@ -12,7 +12,9 @@ configs:
 
 services:
   elasticsearch:
+    # container_name: elasticsearch
     image: docker.io/library/elasticsearch:${VERSION}
+    env_file: elasticsearch.env
     ports:
       - 9200:9200
     volumes:
@@ -28,7 +30,9 @@ services:
       - elastic
 
   kibana:
+    # container_name: kibana
     image: docker.io/library/kibana:${VERSION}
+    env_file: elasticsearch.env
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     ports:

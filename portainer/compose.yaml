@@ -4,6 +4,7 @@ volumes:
 
 services:
   portainer:
+    container_name: portainer
     image: portainer/portainer-ce:lts
     ports:
       - 8000:8000

@@ -39,6 +39,7 @@ configs:
 
 services:
   nats-service:
+    container_name: nats
     image: nats:latest
     command: --jetstream --http_port 8222
     networks:
