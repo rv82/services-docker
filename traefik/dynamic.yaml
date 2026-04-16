@@ -1,0 +1,144 @@
+http:
+  services:
+    cfg-service:
+      loadBalancer:
+        servers:
+          - url: "h2c://172.21.0.1:5003"
+    
+    catalog-service:
+      loadBalancer:
+        servers:
+          - url: "h2c://172.21.0.1:5006"
+
+    task-service:
+      loadBalancer:
+        servers:
+          - url: "h2c://172.21.0.1:5010"
+
+    importexport_service:
+      loadBalancer:
+        servers:
+          - url: "h2c://172.21.0.1:5014"
+          
+    audit_service:
+      loadBalancer:
+        servers:
+          - url: "h2c://172.21.0.1:5016"
+
+    bpo-service:
+      loadBalancer:
+        servers:
+          - url: "h2c://172.21.0.1:5018"
+
+  routers:
+    auth-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v1.AuthenticationService`)"
+      service: "cfg-service"
+      
+    cfg-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.ConfigurationService.v2`)"
+      service: "cfg-service"
+
+    license_service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v1.LicenseService`)"
+      service: "cfg-service"
+
+    audit_service-router:
+      rule: "PathPrefix(`/xlibcs.audit_trail.v2`)"
+      service: "audit_service"
+       
+    importexport_service-router:
+      rule: "PathPrefix(`/XLibCS.Services.ImportExportService`)"
+      service: "importexport_service"
+        
+    catalog-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v1.CatalogService`)"
+      service: "catalog-service"
+      
+    catalog3d-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v1.CatalogService3D`)"
+      service: "catalog-service"
+    
+    folder-classifier-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.FoldersClassifiersService`)"
+      service: "catalog-service"
+
+    hierarchy-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.HierarchyService`)"
+      service: "catalog-service"
+
+    report-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.ReportService`)"
+      service: "catalog-service"
+
+    presentation-service-router:
+      rule: "PathPrefix(`/xlibcs.representation`)"
+      service: "catalog-service"
+
+    project-parameters-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.ProjectParametersService`)"
+      service: "catalog-service"
+
+    collision-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.CollisionService`)"
+      service: "catalog-service"
+
+    object-parameters-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.ObjectParameterService`)"
+      service: "catalog-service"
+
+    object-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.ObjectService`)"
+      service: "catalog-service"
+
+    calendar-planning-service-router:
+      rule: "PathPrefix(`/xlibcs.calendar_planning.v2`)"
+      service: "catalog-service"
+
+    file-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.FileService`)"
+      service: "catalog-service"
+
+    maintenance-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.MaintenanceService`)"
+      service: "catalog-service"
+
+    tagging-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.TaggingService`)"
+      service: "catalog-service"
+
+    coord-grid-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.CoordGridService`)"
+      service: "catalog-service"
+
+    expertise-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.ExpertiseService`)"
+      service: "catalog-service"
+
+    ifc-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.IfcService`)"
+      service: "catalog-service"
+
+    publications-service-router:
+      rule: "PathPrefix(`/xlibcs.publications`)"
+      service: "catalog-service"
+
+    madb-service-router:
+      rule: "PathPrefix(`/xlibcs.madbdataservice.v1`)"
+      service: "catalog-service"
+
+    catalog-validation-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.CatalogValidationService`)"
+      service: "catalog-service"
+      
+    requirement-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.v2.RequirementService`)"
+      service: "catalog-service"
+
+    bpo-service-router:
+      rule: "PathPrefix(`/xlibcs.bp.v2`)"
+      service: "bpo-service"
+
+    task-service-router:
+      rule: "PathPrefix(`/XLibCS.Services.TaskService`)"
+      service: "task-service"

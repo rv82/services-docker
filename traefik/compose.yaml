@@ -1,0 +1,40 @@
+configs:
+  traefik.yml:
+    content: |
+      api:
+        insecure: true
+        dashboard: true
+
+      entryPoints:
+        grpc:
+          address: ":5000"
+
+      providers:
+        file:
+          directory: "/etc/traefik/dynamic"
+          watch: true
+
+      log:
+        level: DEBUG
+        filePath: "/var/log/traefik/traefik.log"
+
+      accessLog:
+        filePath: "/var/log/traefik/access.log"
+        fields:
+          defaultMode: keep
+          names:
+            ServiceName: keep
+            RouterName: keep
+            EntryPointName: keep
+
+services:
+  traefik:
+    container_name: traefik
+    image: traefik:latest
+    ports:
+      - 5000:5000
+    configs:
+      - source: traefik.yml
+        target: /etc/traefik/traefik.yml
+    volumes:
+      - ./dynamic.yaml:/etc/traefik/dynamic/dynamic.yml
